@@ -26,19 +26,16 @@ public class Player : MonoBehaviour
     private bool _jumping;
     private bool _dead;
 
-    public bool _scheduledJump;
-
     private void Start()
     {
-        //_platforming = GetComponentInChildren<PlatformingObject>();
-        //_platforming.OnTouchGround += OnTouchGround;
-        //_platforming.OnLeaveGround += OnLeaveGround;
-
         _rigidbody = GetComponent<Rigidbody>();
         _playerModelTransform = transform.GetChild(0).transform;
         _cameraTransform = Camera.main.transform;
 
         Physics.gravity = Vector3.down * (9.81f * gravityMultiplier);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -56,24 +53,17 @@ public class Player : MonoBehaviour
         Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         inputVector = ClampInput(inputVector);
 
-        _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f);
+        _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,
+            1, QueryTriggerInteraction.Ignore);
         _speed = inputVector.magnitude * maxSpeed * (_grounded ? 1 : 1.2f);
 
         CalculateMovementDirection(inputVector);
 
         bool nearGround = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 1f);
-        if (_grounded && Input.GetButton("Jump"))
+        if (_grounded && !_jumping && Input.GetButton("Jump"))
         {
             _jumping = true;
-           // _scheduledJump = false;
-        }//else if (_grounded && _scheduledJump)
-        //{
-          //  _jumping = true;
-           // _scheduledJump = false;
-       // } //else if (nearGround && _rigidbody.linearVelocity.y < 0 && Input.GetButton("Jump"))
-        //{
-        //    _scheduledJump = true;
-        //}
+        }
     }
 
     private Vector2 ClampInput(Vector2 inputVector)
