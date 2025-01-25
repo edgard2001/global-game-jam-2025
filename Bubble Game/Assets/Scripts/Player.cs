@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private bool _grounded;
     private bool _jumping;
     private bool _dead;
+    public Transform _respawnPoint;
 
     private void Start()
     {
@@ -121,6 +122,9 @@ public class Player : MonoBehaviour
             float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
             transform.localScale = Vector3.one * r3;
             Destroy(other.transform.parent.gameObject);
+        } else if (other.CompareTag("Hazard"))
+        {
+            transform.position = _respawnPoint.position;
         }
     }
 }
