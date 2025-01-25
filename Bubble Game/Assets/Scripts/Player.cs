@@ -43,8 +43,6 @@ public class Player : MonoBehaviour
     
    public Transform _respawnPoint;
 
-    public bool _scheduledJump;
-
     private void Start()
     {
         _initialSize = transform.localScale;
@@ -62,6 +60,9 @@ public class Player : MonoBehaviour
         _cameraTransform = Camera.main.transform;
 
         Physics.gravity = Vector3.down * (9.81f * gravityMultiplier);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()
@@ -121,24 +122,17 @@ public class Player : MonoBehaviour
         Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         inputVector = ClampInput(inputVector);
 
-        _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f);
+        _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,
+            1, QueryTriggerInteraction.Ignore);
         _speed = inputVector.magnitude * maxSpeed * (_grounded ? 1 : 1.2f);
 
         CalculateMovementDirection(inputVector);
 
         bool nearGround = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 1f);
-        if (_grounded && Input.GetButton("Jump"))
+        if (_grounded && !_jumping && Input.GetButton("Jump"))
         {
             _jumping = true;
-           // _scheduledJump = false;
-        }//else if (_grounded && _scheduledJump)
-        //{
-          //  _jumping = true;
-           // _scheduledJump = false;
-       // } //else if (nearGround && _rigidbody.linearVelocity.y < 0 && Input.GetButton("Jump"))
-        //{
-        //    _scheduledJump = true;
-        //}
+        }
     }
 
     private Vector2 ClampInput(Vector2 inputVector)
@@ -196,6 +190,9 @@ public class Player : MonoBehaviour
             float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
             transform.localScale = Vector3.one * r3;
             Destroy(other.transform.parent.gameObject);
+        } else if (other.CompareTag("Hazard"))
+        {
+            transform.position = _respawnPoint.position;
         }
     }
 }

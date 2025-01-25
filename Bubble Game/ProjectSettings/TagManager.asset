@@ -8,6 +8,7 @@ TagManager:
   - Bubble
   - HeatElement
   - ColdElement
+  - Hazard
   layers:
   - Default
   - TransparentFX

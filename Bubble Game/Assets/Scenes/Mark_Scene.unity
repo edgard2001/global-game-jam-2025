@@ -429,7 +429,7 @@ Transform:
   m_GameObject: {fileID: 1142382966}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.63, y: -7.49, z: -12.779646}
+  m_LocalPosition: {x: 5.63, y: -7.09, z: -12.779646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -456,6 +456,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7234737874540318802, guid: fdb41574a83c44547a1b1df9f292d0bf, type: 3}
+      propertyPath: _respawnPoint
+      value: 
+      objectReference: {fileID: 1142382967}
     - target: {fileID: 9176441366938309929, guid: fdb41574a83c44547a1b1df9f292d0bf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.174888
@@ -518,7 +522,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1575626618
 Transform:
   m_ObjectHideFlags: 0
@@ -528,7 +532,7 @@ Transform:
   m_GameObject: {fileID: 1575626617}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.151, z: 0}
   m_LocalScale: {x: 0.34592998, y: 0.34592998, z: 0.34592998}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -783,6 +787,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnpointTrigger
       objectReference: {fileID: 0}
+    - target: {fileID: 2520137334413422053, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172404983524167860, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172404983524167860, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6172404983524167860, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6194542734314478143, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
       propertyPath: _player
       value: 
@@ -791,6 +811,10 @@ PrefabInstance:
       propertyPath: _defaultRespawnPoint
       value: 
       objectReference: {fileID: 1142382967}
+    - target: {fileID: 8210789953331101859, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8848645796567799733, guid: ae2d2f40596fa463c80ffcdd6766d64e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6.43
