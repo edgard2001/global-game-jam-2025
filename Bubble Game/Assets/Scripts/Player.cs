@@ -121,4 +121,16 @@ public class Player : MonoBehaviour
             _jumping = false;
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bubble"))
+        {
+            float r1 = transform.localScale.x;
+            float r2 = other.transform.parent.transform.localScale.x;
+            float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
+            transform.localScale = Vector3.one * r3;
+            Destroy(other.transform.parent.gameObject);
+        }
+    }
 }
