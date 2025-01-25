@@ -63,7 +63,7 @@ public class SpringArmCamera : MonoBehaviour
 
         _cameraResetTime = cameraResetCooldown;
 
-        _pitch += verticalInput * lookSensitivityMultiplier * Time.deltaTime;
+        _pitch -= verticalInput * lookSensitivityMultiplier * Time.deltaTime;
         _yaw += horizontalInput * lookSensitivityMultiplier * Time.deltaTime;
         _pitch = Mathf.Clamp(_pitch, -80, 74);
     }

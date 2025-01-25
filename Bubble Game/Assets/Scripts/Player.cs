@@ -26,6 +26,8 @@ public class Player : MonoBehaviour
     private bool _jumping;
     private bool _dead;
 
+    public bool _scheduledJump;
+
     private void Start()
     {
         //_platforming = GetComponentInChildren<PlatformingObject>();
@@ -55,15 +57,23 @@ public class Player : MonoBehaviour
         inputVector = ClampInput(inputVector);
 
         _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f);
-        if (_grounded)
-            _speed = inputVector.magnitude * maxSpeed;
+        _speed = inputVector.magnitude * maxSpeed * (_grounded ? 1 : 1.2f);
 
         CalculateMovementDirection(inputVector);
 
-        if (_grounded && Input.GetButtonDown("Jump"))
+        bool nearGround = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 1f);
+        if (_grounded && Input.GetButton("Jump"))
         {
             _jumping = true;
-        }
+           // _scheduledJump = false;
+        }//else if (_grounded && _scheduledJump)
+        //{
+          //  _jumping = true;
+           // _scheduledJump = false;
+       // } //else if (nearGround && _rigidbody.linearVelocity.y < 0 && Input.GetButton("Jump"))
+        //{
+        //    _scheduledJump = true;
+        //}
     }
 
     private Vector2 ClampInput(Vector2 inputVector)
