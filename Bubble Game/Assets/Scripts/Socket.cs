@@ -5,14 +5,15 @@ using UnityEngine;
 
 public class Socket : MonoBehaviour
 {
+    public Action OnActivate;
+    public Action OnDeactivate;
+    
     [SerializeField] private Transform attachmentPoint;
     [SerializeField] private Renderer lightRenderer;
     
     [SerializeField] private Color offColor;
     [SerializeField] private Color onColor;
     
-    public Action OnActivate;
-    public Action OnDeactivate;
     
     private Transform _item;
     private Material _material;
