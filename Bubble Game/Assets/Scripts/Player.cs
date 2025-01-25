@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     private bool _grounded;
     private bool _jumping;
     private bool _dead;
+   public Transform _respawnPoint;
 
     public bool _scheduledJump;
 
