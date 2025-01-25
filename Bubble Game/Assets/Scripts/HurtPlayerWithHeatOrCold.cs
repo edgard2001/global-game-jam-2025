@@ -32,16 +32,17 @@ public class HurtPlayerWithHeatOrCold : MonoBehaviour
                 Debug.Log("Player has entered the heat trigger");
                 // Player will take expand
                 // other.GetComponent<PlayerHealth>().ExpandPlayer();
+                other.GetComponent<Player>().ShouldGrow();
             }
             else if (selectedHurtType == HurtType.Cold)
             {
                 Debug.Log("Player has entered the cold trigger");
                 // Player will take shrink
-                // other.GetComponent<PlayerHealth>().ShrinkPlayer();
+                other.GetComponent<Player>().ShouldShrink();
             }
             Debug.Log("Player will die");
             // Player will bounce backwards
-            other.GetComponent<Rigidbody>().AddForce(-other.transform.forward * 100000f);
+            // other.GetComponent<Rigidbody>().AddForce(-other.transform.forward * 100000f);
         }
     }
 }

@@ -25,12 +25,34 @@ public class Player : MonoBehaviour
     private bool _grounded;
     private bool _jumping;
     private bool _dead;
+    
+    private Vector3 _initialSize;
+    private Vector3 _shrinkSize;
+    private Vector3 _growSize;
+    
+    private enum SizeType
+    {
+        Normal,
+        Shrink,
+        Grow,
+        None
+    }
+
+    private SizeType sizeType;
+    private float _sizeCooldownTimer;
+    
    public Transform _respawnPoint;
 
     public bool _scheduledJump;
 
     private void Start()
     {
+        _initialSize = transform.localScale;
+        _shrinkSize = _initialSize * 0.5f;
+        _growSize = _initialSize * 2f;
+        sizeType = SizeType.Normal;
+        _sizeCooldownTimer = 0;
+
         //_platforming = GetComponentInChildren<PlatformingObject>();
         //_platforming.OnTouchGround += OnTouchGround;
         //_platforming.OnLeaveGround += OnLeaveGround;
@@ -50,6 +72,48 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         MoveAndTurn();
+        SizeHandler();
+    }
+
+    private void SizeHandler()
+    {
+        if (_sizeCooldownTimer > 0)
+        {
+            _sizeCooldownTimer -= Time.deltaTime;
+            Debug.Log("Growing cooldown: " + _sizeCooldownTimer);
+            // Change player's size based on the sizeType
+        }
+        if (_sizeCooldownTimer <= 0)
+        {
+            sizeType = SizeType.Normal;
+        }
+        
+        switch (sizeType)
+        {
+            case SizeType.Normal:
+                transform.localScale = Vector3.Lerp(transform.localScale, _initialSize, Time.deltaTime * 2);
+                break;
+            case SizeType.Shrink:
+                transform.localScale = Vector3.Lerp(transform.localScale, _shrinkSize, Time.deltaTime * 2);
+                break;
+            case SizeType.Grow:
+                transform.localScale = Vector3.Lerp(transform.localScale, _growSize, Time.deltaTime * 2);
+                break;
+            case SizeType.None:
+                break;
+        }
+    }
+
+    public void ShouldShrink()
+    {
+        sizeType = SizeType.Shrink;
+        _sizeCooldownTimer = 5;
+    }
+    
+    public void ShouldGrow()
+    {
+        sizeType = SizeType.Grow;
+        _sizeCooldownTimer = 5;
     }
 
     private void ProcessInput()
