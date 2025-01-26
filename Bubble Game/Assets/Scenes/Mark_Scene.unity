@@ -536,13 +536,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spikePrefab: {fileID: 8383576629581646802, guid: 13ed01861ab594992b65aa44345e8025, type: 3}
   spawnPoint: {fileID: 1268228022}
+  spikeSpeed: 10
+  spikeLifetime: 3
   continuousShooting: 1
   shootDelay: 1
-  spikeSpeed: 10
-  spikeLifetime: 5
-  useAngle: 0
-  angleRange: 180
-  spikesPerShot: 1
 --- !u!4 &1268228022
 Transform:
   m_ObjectHideFlags: 0
