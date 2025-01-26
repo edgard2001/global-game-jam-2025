@@ -12,7 +12,7 @@ public class DoorController : MonoBehaviour
     private void Awake()
     {
         _closedPosition = transform.position;
-        _openPosition = _closedPosition + new Vector3(0, _closedPosition.y - 3, 0);
+        _openPosition = _closedPosition + new Vector3(0, _closedPosition.y - 4, 0);
 
         _interactableTrigger = activationSwitch as IInteractableTrigger;
         if (_interactableTrigger != null)
@@ -40,6 +40,12 @@ public class DoorController : MonoBehaviour
     }
 
     public void CloseDoor()
+    {
+        // Switch to false after 1 second
+        Invoke("CloseDoorAfterDelay", 1);
+    }
+    
+    private void CloseDoorAfterDelay()
     {
         _isOpen = false;
     }
