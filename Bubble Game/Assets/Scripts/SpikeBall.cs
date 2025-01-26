@@ -12,11 +12,14 @@ public class SpikeBall : MonoBehaviour
     private Rigidbody rb;
     private bool isCharging = false;
     private Vector3 chargeDirection; 
-    private float chargeTimer = 0f; 
+    private float chargeTimer = 0f;
+
+    private Vector3 _startPosition;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        _startPosition = transform.position;
     }
 
     void FixedUpdate()
@@ -75,6 +78,21 @@ public class SpikeBall : MonoBehaviour
 
     private void EndCharge()
     {
+        isCharging = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            Invoke(nameof(Respawn), 2f);
+        }
+    }
+
+    private void Respawn()
+    {
+        transform.position = _startPosition;
+        chargeTimer = 0f;
         isCharging = false;
     }
 }

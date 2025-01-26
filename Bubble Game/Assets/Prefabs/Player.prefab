@@ -146,6 +146,9 @@ MonoBehaviour:
   coolColor: {r: 0.27107865, g: 0.3648619, b: 0.97735846, a: 0}
   heatColor: {r: 1, g: 0.405732, b: 0.066037595, a: 0}
   _respawnPoint: {fileID: 0}
+  deathEffect: {fileID: 1690562511009458, guid: f77b77f3cd0b83a4d91496b737831fbd, type: 3}
+  popEffect: {fileID: 1945864579541184, guid: 6561f682a05aa4a4e8312d87377cabd5, type: 3}
+  shootEffect: {fileID: 0}
 --- !u!54 &5350307497288384430
 Rigidbody:
   m_ObjectHideFlags: 0
