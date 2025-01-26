@@ -13,12 +13,7 @@ public class Respawn : MonoBehaviour
     {
         _player = FindAnyObjectByType<Player>();
     }
-
-    void Update()
-    {
-        
-        
-    }
+    
 
     private void OnTriggerEnter(Collider other)
     {

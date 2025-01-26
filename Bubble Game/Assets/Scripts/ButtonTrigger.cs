@@ -9,21 +9,43 @@ public class ButtonTrigger : MonoBehaviour, IInteractableTrigger
     public Material platformMaterial;
     public Material platformPressedMaterial;
     
+    [SerializeField] private bool toggleMode = false; // New toggle mode boolean
     private bool _isPressed = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!_isPressed && other.CompareTag("Player"))
+        if (other.CompareTag("Player") )
         {
-            ChangeMaterial(platformPressedMaterial);
-            _isPressed = true;
-            OnActivate?.Invoke();
+            if (!toggleMode) // Original behavior
+            {
+                if (!_isPressed)
+                {
+                    ChangeMaterial(platformPressedMaterial);
+                    _isPressed = true;
+                    OnActivate?.Invoke();
+                }
+            } 
+            else // Toggle mode behavior
+            {
+                _isPressed = !_isPressed;
+                
+                if (_isPressed)
+                {
+                    ChangeMaterial(platformPressedMaterial);
+                    OnActivate?.Invoke();
+                }
+                else
+                {
+                    ChangeMaterial(platformMaterial);
+                    OnDeactivate?.Invoke();
+                }
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (_isPressed && other.CompareTag("Player"))
+        if (!toggleMode && _isPressed && other.CompareTag("Player"))
         {
             ChangeMaterial(platformMaterial);
             _isPressed = false;
