@@ -276,13 +276,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947517738}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0.0020233747, y: -0.007373154, z: -0.004209108, w: 0.9999619}
   m_LocalPosition: {x: 1.994142, y: -7.7345395, z: -13.002}
   m_LocalScale: {x: 4.8625, y: 4.8625, z: 4.8625}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.228, y: -0.846, z: -0.484}
 --- !u!1 &1128156920
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,56 +505,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdb41574a83c44547a1b1df9f292d0bf, type: 3}
---- !u!1 &1268228020
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1268228022}
-  - component: {fileID: 1268228021}
-  m_Layer: 0
-  m_Name: SpikeShooter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1268228021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268228020}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7046582f4c0443ca05e1b2fe785da5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spikePrefab: {fileID: 8383576629581646802, guid: 13ed01861ab594992b65aa44345e8025, type: 3}
-  spawnPoint: {fileID: 1268228022}
-  spikeSpeed: 10
-  spikeLifetime: 3
-  continuousShooting: 1
-  shootDelay: 1
---- !u!4 &1268228022
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1268228020}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.176631, y: -6.365, z: -15.315789}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1575626617
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,6 +775,63 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.01
   m_Center: {x: 0.3, y: 0, z: 0}
+--- !u!1001 &1943374019288119354
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2127760107952803049, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7803623965714614472, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
+      propertyPath: m_Name
+      value: SpikeShooter
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 42d6e6f48718142e2a9d24dd960e1a2f, type: 3}
 --- !u!1001 &2929102471724634148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1067,4 +1074,4 @@ SceneRoots:
   - {fileID: 3054199760436431015}
   - {fileID: 2929102471724634148}
   - {fileID: 1142382967}
-  - {fileID: 1268228022}
+  - {fileID: 1943374019288119354}
