@@ -9,6 +9,7 @@ TagManager:
   - HeatElement
   - ColdElement
   - Hazard
+  - PlayerArea
   layers:
   - Default
   - TransparentFX
