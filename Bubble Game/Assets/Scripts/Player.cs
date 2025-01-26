@@ -65,6 +65,12 @@ public class Player : MonoBehaviour
     public GameObject popEffect;
     public GameObject shootEffect;
 
+    private AudioSource _audio;
+    public AudioClip jumpAudioClip;
+    public AudioClip deathAudioClip;
+    public AudioClip growAudioClip;
+    public AudioClip shrinkAudioClip;
+
     private void Start()
     {
         sizeType = SizeType.Normal;
@@ -77,6 +83,7 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _playerModelTransform = transform.GetChild(0).transform;
         _cameraTransform = Camera.main.transform;
+        _audio = GetComponent<AudioSource>();
 
         Physics.gravity = Vector3.down * (9.81f * gravityMultiplier);
 
@@ -191,6 +198,7 @@ public class Player : MonoBehaviour
 
         if (_grounded && !_jumping && Input.GetButton("Jump"))
         {
+            _audio.PlayOneShot(jumpAudioClip);
             _jumping = true;
             _targetAccelerationSizeModifier = 0.1f;
         }
@@ -258,6 +266,8 @@ public class Player : MonoBehaviour
         {
             _dead = true;
             _playerModelTransform.gameObject.SetActive(false);
+
+            _audio.PlayOneShot(deathAudioClip);
 
             GameObject effect1 = Instantiate(deathEffect, transform.position, Quaternion.identity);
             Destroy(effect1, 10f);
