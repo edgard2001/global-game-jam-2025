@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -29,6 +30,8 @@ public class Player : MonoBehaviour
     private Vector3 _initialSize;
     private Vector3 _shrinkSize;
     private Vector3 _growSize;
+
+    private bool isBoosted = false;
     
     private enum SizeType
     {
@@ -195,4 +198,13 @@ public class Player : MonoBehaviour
             transform.position = _respawnPoint.position;
         }
     }
+    
+    public void ApplySpeedBoost(float boostAmount)
+    {
+        Debug.Log("Boosting");
+        // Apply force in the player's forward direction
+        Vector3 launchDirection = _cameraTransform.forward;// transform.forward;
+        _rigidbody.AddForce(launchDirection * boostAmount, ForceMode.Impulse);
+    }
+
 }

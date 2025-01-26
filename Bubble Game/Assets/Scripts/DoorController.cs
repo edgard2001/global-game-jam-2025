@@ -1,39 +1,39 @@
+// Assets/Scripts/DoorController.cs
 using UnityEngine;
 
 public class DoorController : MonoBehaviour
 {
-    [SerializeField] private Socket activationSwitch;
+    [SerializeField] private MonoBehaviour activationSwitch;
+    private IInteractableTrigger _interactableTrigger;
     private Vector3 _closedPosition;
     private Vector3 _openPosition;
     private bool _isOpen = false;
-    
+
     private void Awake()
     {
         _closedPosition = transform.position;
         _openPosition = _closedPosition + new Vector3(0, _closedPosition.y - 3, 0);
-        
-        if (activationSwitch)
+
+        _interactableTrigger = activationSwitch as IInteractableTrigger;
+        if (_interactableTrigger != null)
         {
-            activationSwitch.OnActivate += OpenDoor;
-            activationSwitch.OnDeactivate += CloseDoor;
+            _interactableTrigger.OnActivate += OpenDoor;
+            _interactableTrigger.OnDeactivate += CloseDoor;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Control door movement
         if (_isOpen)
         {
             transform.position = Vector3.Lerp(transform.position, _openPosition, Time.deltaTime);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, _closedPosition, Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, _closedPosition, (float)(Time.deltaTime * 0.5));
         }
     }
-    
-    // Call this method to unlock the door
+
     public void OpenDoor()
     {
         _isOpen = true;

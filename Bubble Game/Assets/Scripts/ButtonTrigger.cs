@@ -1,52 +1,38 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class ButtonTrigger : MonoBehaviour
+public class ButtonTrigger : MonoBehaviour, IInteractableTrigger
 {
-    public GameObject triggerPlatform;
+    public event Action OnActivate;
+    public event Action OnDeactivate;
+
     public Material platformMaterial;
     public Material platformPressedMaterial;
-    public bool isPressed;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        // platformMaterial = Resources.Load("materials/PlatformDefaultMaterial") as Material;
-        // platformPressedMaterial = Resources.Load("materials/PlatformPressedMaterial") as Material;
-        
-        isPressed = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
+    private bool _isPressed = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Player") && !isPressed)
+        if (!_isPressed && other.CompareTag("Player"))
         {
-            Debug.Log("Player has entered the trigger");
-            // Set platform material to pressed material
             ChangeMaterial(platformPressedMaterial);
-            isPressed = true;
+            _isPressed = true;
+            OnActivate?.Invoke();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.CompareTag("Player") && isPressed)
+        if (_isPressed && other.CompareTag("Player"))
         {
-            Debug.Log("Player has left the trigger");
-            // Set platform material to default material
             ChangeMaterial(platformMaterial);
-            isPressed = false;
+            _isPressed = false;
+            OnDeactivate?.Invoke();
         }
     }
     
     private void ChangeMaterial(Material material)
     {
-        triggerPlatform.GetComponent<Renderer>().material = material;
+        gameObject.GetComponent<Renderer>().material = material;
     }
 }
