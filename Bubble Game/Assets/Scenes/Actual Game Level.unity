@@ -908,6 +908,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1516533637}
     m_Modifications:
+    - target: {fileID: 3463124299275009892, guid: 6809327cda27cec4cb4f26975e5efb1a, type: 3}
+      propertyPath: speedBoostAmount
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3872516259905639256, guid: 6809327cda27cec4cb4f26975e5efb1a, type: 3}
       propertyPath: m_Name
       value: Speed Tunnel
@@ -5830,6 +5834,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1516533637}
     m_Modifications:
+    - target: {fileID: 62924532610417463, guid: 401bee76c92b66d4ca2c6e7cbacb3e0d, type: 3}
+      propertyPath: speedBoostAmount
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 320347235843069170, guid: 401bee76c92b66d4ca2c6e7cbacb3e0d, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -7444,6 +7452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1516533637}
     m_Modifications:
+    - target: {fileID: 3463124299275009892, guid: 6809327cda27cec4cb4f26975e5efb1a, type: 3}
+      propertyPath: speedBoostAmount
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3872516259905639256, guid: 6809327cda27cec4cb4f26975e5efb1a, type: 3}
       propertyPath: m_Name
       value: Speed Tunnel (1)
@@ -14043,8 +14055,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 100, y: 100, z: 100}
-  m_Center: {x: 42.450172, y: 23.17839, z: 9.562538}
+  m_Size: {x: 100, y: 100, z: 265.0321}
+  m_Center: {x: 42.450172, y: 23.17839, z: 92.078606}
 --- !u!114 &2114324747 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8639173968744274276, guid: 991944d54e1c26443b9fca85ed24a416, type: 3}
@@ -14111,6 +14123,10 @@ PrefabInstance:
     - target: {fileID: 5333588969951631421, guid: ab772a50a498c0d4ca8aec99e250854d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9212227791692385861, guid: ab772a50a498c0d4ca8aec99e250854d, type: 3}
+      propertyPath: speedBoostAmount
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
