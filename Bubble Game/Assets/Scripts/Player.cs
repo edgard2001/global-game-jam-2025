@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Diagnostics.Contracts;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
     private bool _dead;
     
     private float _size = 1f;
-    private float _targetSizeAfterMerge = 1f;
+    private float _targetSize = 1f;
     private float _temperatureSizeModifier = 0f;
     private float _accelerationSizeModifier = 0f;
     private float _targetAccelerationSizeModifier = 0f;
@@ -69,10 +70,12 @@ public class Player : MonoBehaviour
     private AudioSource _audio;
     public AudioClip jumpAudioClip;
     public AudioClip mergeAudioClip;
+    public AudioClip shotAudioClip;
     public AudioClip deathAudioClip;
     public AudioClip growAudioClip;
     public AudioClip shrinkAudioClip;
 
+    public GameObject projectileBubble;
 
     void Start()
     {
@@ -144,7 +147,8 @@ public class Player : MonoBehaviour
                 break;
         }
 
-        _size = Mathf.Lerp(_size, _targetSizeAfterMerge, Time.deltaTime * 2);
+        _size = Mathf.Lerp(_size, _targetSize, Time.deltaTime * 2);
+        if (Mathf.Abs(_targetSize - _size) < 0.01) _size = _targetSize;
         transform.localScale = Vector3.one * (_size + _temperatureSizeModifier);
         
         if (Mathf.Abs(_targetAccelerationSizeModifier - _accelerationSizeModifier) > 0.01f)
@@ -206,6 +210,8 @@ public class Player : MonoBehaviour
             _jumping = true;
             _targetAccelerationSizeModifier = 0.1f;
         }
+
+        if (Input.GetButtonDown("Fire1")) Shoot();
     }
 
     private Vector2 ClampInput(Vector2 inputVector)
@@ -263,7 +269,7 @@ public class Player : MonoBehaviour
             float r1 = _size;
             float r2 = other.transform.parent.transform.localScale.x;
             float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
-            _targetSizeAfterMerge = r3;
+            _targetSize = r3;
             Destroy(other.transform.parent.gameObject);
             _audio.PlayOneShot(mergeAudioClip);
         } 
@@ -312,7 +318,7 @@ public class Player : MonoBehaviour
         material.color = color;
 
         _size = 1f;
-        _targetSizeAfterMerge = 1f;
+        _targetSize = 1f;
         _temperatureSizeModifier = 0f;
         _accelerationSizeModifier = 0f;
         _targetAccelerationSizeModifier = 0f;
@@ -324,5 +330,23 @@ public class Player : MonoBehaviour
         _rigidbody.linearVelocity = Vector3.zero;
 
         _dead = false;
+    }
+
+    private void Shoot()
+    {
+        if (_size < 1.03f) return;
+            
+        _targetSize = _size - 0.03f;
+
+        Vector3 force = _cameraTransform.forward * 5 + Vector3.up * 5;
+
+        GameObject projectile = Instantiate(projectileBubble, 
+            _playerModelTransform.position + _cameraTransform.forward * transform.localScale.z,
+            Quaternion.LookRotation(force)
+        );
+        projectile.GetComponent<Rigidbody>().AddForce(force, ForceMode.Impulse);
+        Destroy(projectile, 5f);
+        _audio.PlayOneShot(shotAudioClip);
+
     }
 }
