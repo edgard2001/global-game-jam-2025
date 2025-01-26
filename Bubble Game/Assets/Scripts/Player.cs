@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Diagnostics.Contracts;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -58,7 +59,17 @@ public class Player : MonoBehaviour
     private SizeType sizeType;
     private float _sizeCooldownTimer;
     
-   public Transform _respawnPoint;
+    public Transform _respawnPoint;
+
+    public GameObject deathEffect;
+    public GameObject popEffect;
+    public GameObject shootEffect;
+
+    private AudioSource _audio;
+    public AudioClip jumpAudioClip;
+    public AudioClip deathAudioClip;
+    public AudioClip growAudioClip;
+    public AudioClip shrinkAudioClip;
 
     private void Start()
     {
@@ -72,6 +83,7 @@ public class Player : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _playerModelTransform = transform.GetChild(0).transform;
         _cameraTransform = Camera.main.transform;
+        _audio = GetComponent<AudioSource>();
 
         Physics.gravity = Vector3.down * (9.81f * gravityMultiplier);
 
@@ -167,6 +179,12 @@ public class Player : MonoBehaviour
         Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         inputVector = ClampInput(inputVector);
 
+        if (_dead)
+        {
+            _speed = 0;
+            return;
+        }
+
         bool groundCheck = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,1, QueryTriggerInteraction.Ignore);
         if (_grounded != groundCheck)
         {
@@ -180,6 +198,7 @@ public class Player : MonoBehaviour
 
         if (_grounded && !_jumping && Input.GetButton("Jump"))
         {
+            _audio.PlayOneShot(jumpAudioClip);
             _jumping = true;
             _targetAccelerationSizeModifier = 0.1f;
         }
@@ -243,9 +262,20 @@ public class Player : MonoBehaviour
             _targetSizeAfterMerge = r3;
             Destroy(other.transform.parent.gameObject);
         } 
-        else if (other.CompareTag("Hazard"))
+        else if (other.CompareTag("Hazard") && !_dead)
         {
-            transform.position = _respawnPoint.position;
+            _dead = true;
+            _playerModelTransform.gameObject.SetActive(false);
+
+            _audio.PlayOneShot(deathAudioClip);
+
+            GameObject effect1 = Instantiate(deathEffect, transform.position, Quaternion.identity);
+            Destroy(effect1, 10f);
+
+            GameObject effect2 = Instantiate(popEffect, transform.position, Quaternion.identity);
+            Destroy(effect2, 2f);
+
+            Invoke(nameof(Respawn), 2f);
         }
     }
     
@@ -258,4 +288,19 @@ public class Player : MonoBehaviour
         _rigidbody.AddForce(launchDirection * boostAmount, ForceMode.Impulse);
     }
 
+    private void Respawn()
+    {
+        material.color = color;
+
+        _size = 1f;
+        _targetSizeAfterMerge = 1f;
+        _temperatureSizeModifier = 0f;
+        _accelerationSizeModifier = 0f;
+        _targetAccelerationSizeModifier = 0f;
+
+        transform.position = _respawnPoint.position;
+        _playerModelTransform.gameObject.SetActive(true);
+
+        _dead = false;
+    }
 }

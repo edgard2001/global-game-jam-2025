@@ -25,14 +25,15 @@ public class MovingSpikeWall : MonoBehaviour
     {
         UpAndDown,
         LeftAndRight,
-        BackAndForth
+        ForwardAndBack,
+        BackAndForward
     }
 
     void Start()
     {
         startPos = transform.position;
 
-        
+        // Determine the target position based on the selected direction
         switch (movementDirection)
         {
             case MovementDirection.UpAndDown:
@@ -41,8 +42,11 @@ public class MovingSpikeWall : MonoBehaviour
             case MovementDirection.LeftAndRight:
                 targetPos = startPos + new Vector3(moveDistance, 0, 0);
                 break;
-            case MovementDirection.BackAndForth:
+            case MovementDirection.ForwardAndBack:
                 targetPos = startPos + new Vector3(0, 0, moveDistance);
+                break;
+            case MovementDirection.BackAndForward:
+                targetPos = startPos - new Vector3(0, 0, moveDistance);
                 break;
         }
     }
@@ -66,9 +70,11 @@ public class MovingSpikeWall : MonoBehaviour
     private void MoveSpike()
     {
         Vector3 target = movingForward ? targetPos : startPos;
-        
+
+        // Move towards the target position
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
-        
+
+        // Check if the object has reached the target
         if (Vector3.Distance(transform.position, target) < 0.01f)
         {
             movingForward = !movingForward; // Reverse direction
