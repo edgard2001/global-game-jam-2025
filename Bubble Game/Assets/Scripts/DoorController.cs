@@ -8,11 +8,12 @@ public class DoorController : MonoBehaviour
     private Vector3 _closedPosition;
     private Vector3 _openPosition;
     private bool _isOpen = false;
+    public int closeDistance = 4;
 
     private void Awake()
     {
         _closedPosition = transform.position;
-        _openPosition = _closedPosition + new Vector3(0, _closedPosition.y - 4, 0);
+        _openPosition = _closedPosition + new Vector3(0, _closedPosition.y - closeDistance, 0);
 
         _interactableTrigger = activationSwitch as IInteractableTrigger;
         if (_interactableTrigger != null)

@@ -73,9 +73,8 @@ public class Player : MonoBehaviour
     public AudioClip growAudioClip;
     public AudioClip shrinkAudioClip;
 
-    public GameObject 
 
-    private void Start()
+    void Start()
     {
         sizeType = SizeType.Normal;
         _sizeCooldownTimer = 0;
