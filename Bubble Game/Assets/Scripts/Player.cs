@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Diagnostics.Contracts;
 using UnityEngine;
@@ -264,19 +265,32 @@ public class Player : MonoBehaviour
         } 
         else if (other.CompareTag("Hazard") && !_dead)
         {
-            _dead = true;
-            _playerModelTransform.gameObject.SetActive(false);
-
-            _audio.PlayOneShot(deathAudioClip);
-
-            GameObject effect1 = Instantiate(deathEffect, transform.position, Quaternion.identity);
-            Destroy(effect1, 10f);
-
-            GameObject effect2 = Instantiate(popEffect, transform.position, Quaternion.identity);
-            Destroy(effect2, 2f);
-
-            Invoke(nameof(Respawn), 2f);
+            KillPlayer();
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("PlayerArea") && !_dead)
+        {
+            KillPlayer();
+        }
+    }
+
+    void KillPlayer()
+    {
+        _dead = true;
+        _playerModelTransform.gameObject.SetActive(false);
+
+        _audio.PlayOneShot(deathAudioClip);
+
+        GameObject effect1 = Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Destroy(effect1, 10f);
+
+        GameObject effect2 = Instantiate(popEffect, transform.position, Quaternion.identity);
+        Destroy(effect2, 2f);
+
+        Invoke(nameof(Respawn), 2f);
     }
     
     public void ApplySpeedBoost(float boostAmount)
