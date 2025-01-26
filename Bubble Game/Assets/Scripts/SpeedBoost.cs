@@ -3,19 +3,18 @@ using UnityEngine;
 
 public class SpeedBoost : MonoBehaviour
 {
+    public enum BoostDirection
+    {
+        CameraForward,
+        Upward
+    }
+    public BoostDirection boostDirection;
     private float speedBoostAmount;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         speedBoostAmount = 200f;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     private void OnTriggerStay(Collider other)
     {
@@ -24,7 +23,10 @@ public class SpeedBoost : MonoBehaviour
             Player playerController = other.GetComponent<Player>();
             if (playerController != null)
             {
-                playerController.ApplySpeedBoost(speedBoostAmount);
+                if(boostDirection == BoostDirection.CameraForward)
+                    playerController.ApplySpeedBoost(speedBoostAmount);
+                else if(boostDirection == BoostDirection.Upward)
+                    other.GetComponent<Rigidbody>().AddForce(Vector3.up * speedBoostAmount, ForceMode.Impulse);
             }
         }
     }

@@ -273,7 +273,8 @@ public class Player : MonoBehaviour
     {
         Debug.Log("Boosting");
         // Apply force in the player's forward direction
-        Vector3 launchDirection = _cameraTransform.forward;// transform.forward;
+        // Vector3 launchDirection = (boostDirection == SpeedBoost.BoostDirection.CameraForward)? _cameraTransform.forward: transform.up;// transform.forward;
+        Vector3 launchDirection = _cameraTransform.forward;
         _rigidbody.AddForce(launchDirection * boostAmount, ForceMode.Impulse);
     }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpikeBall : MonoBehaviour
 {
+    public int health = 3;
     public Transform player;
     public float forceStrength = 20f; 
     public float detectionRadius = 15f; 
