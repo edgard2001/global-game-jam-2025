@@ -1,7 +1,11 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
+    [SerializeField] private MonoBehaviour activationSwitch;
+    private IInteractableTrigger _interactableTrigger;
+    
     public bool startAtTop = false;
     public Vector3 initialPosition;
     public Vector3 finalPosition;
@@ -11,6 +15,8 @@ public class MovingPlatform : MonoBehaviour
     private float timer = 0;
     
     public bool moveUp = true; // If true, the platform will move up . If false, the platform will move down.
+
+    public bool canMove;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,11 +30,32 @@ public class MovingPlatform : MonoBehaviour
         {
             finalPosition = new Vector3(initialPosition.x, initialPosition.y + 5, initialPosition.z);
         }
+        
+        _interactableTrigger = activationSwitch as IInteractableTrigger;
+        if (_interactableTrigger != null)
+        {
+            _interactableTrigger.OnActivate += ActivatePlatform;
+            _interactableTrigger.OnDeactivate += DeactivatePlatform;
+        }
+        else
+        {
+            canMove = true;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!canMove)
+        {
+            // If the platform is not at it's initial position, move it to the initial position
+            if (transform.position != initialPosition)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, initialPosition, speed * Time.deltaTime);
+            }
+
+            return;
+        }
         if (timer <= waitTime)
         {
             timer += Time.deltaTime;
@@ -57,6 +84,16 @@ public class MovingPlatform : MonoBehaviour
             timer = 0;
         }
         
+    }
+    
+    public void ActivatePlatform()
+    {
+        canMove = true;
+    }
+    
+    public void DeactivatePlatform()
+    {
+        canMove = false;
     }
     
 }

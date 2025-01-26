@@ -2086,7 +2086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ce37296143f7047bba76f7c4f88ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedHurtType: 0
+  selectedHurtType: 1
 --- !u!4 &8966256529462515711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4365153046151230, guid: 4bd26695ba41ea2408ec9cbc9ef0c183, type: 3}

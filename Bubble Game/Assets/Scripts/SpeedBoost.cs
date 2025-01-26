@@ -9,11 +9,11 @@ public class SpeedBoost : MonoBehaviour
         Upward
     }
     public BoostDirection boostDirection;
-    private float speedBoostAmount;
+    public float speedBoostAmount = 200f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        speedBoostAmount = 200f;
+        
     }
 
     private void OnTriggerStay(Collider other)
