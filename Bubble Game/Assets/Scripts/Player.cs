@@ -68,9 +68,12 @@ public class Player : MonoBehaviour
 
     private AudioSource _audio;
     public AudioClip jumpAudioClip;
+    public AudioClip mergeAudioClip;
     public AudioClip deathAudioClip;
     public AudioClip growAudioClip;
     public AudioClip shrinkAudioClip;
+
+    public GameObject 
 
     private void Start()
     {
@@ -138,6 +141,7 @@ public class Player : MonoBehaviour
                 _lift = Mathf.Clamp(_lift + 10 * Time.deltaTime, 0, 5);
                 break;
             case SizeType.None:
+                _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
                 break;
         }
 
@@ -172,7 +176,7 @@ public class Player : MonoBehaviour
     public void EndResizeEffect()
     {
         sizeType = SizeType.None;
-        _sizeCooldownTimer = 1;
+        _sizeCooldownTimer = 5;
     }
 
     private void ProcessInput()
@@ -262,6 +266,7 @@ public class Player : MonoBehaviour
             float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
             _targetSizeAfterMerge = r3;
             Destroy(other.transform.parent.gameObject);
+            _audio.PlayOneShot(mergeAudioClip);
         } 
         else if (other.CompareTag("Hazard") && !_dead)
         {
@@ -281,6 +286,7 @@ public class Player : MonoBehaviour
     {
         _dead = true;
         _playerModelTransform.gameObject.SetActive(false);
+        _rigidbody.useGravity = false;
 
         _audio.PlayOneShot(deathAudioClip);
 
@@ -314,6 +320,9 @@ public class Player : MonoBehaviour
 
         transform.position = _respawnPoint.position;
         _playerModelTransform.gameObject.SetActive(true);
+
+        _rigidbody.useGravity = true;
+        _rigidbody.linearVelocity = Vector3.zero;
 
         _dead = false;
     }
