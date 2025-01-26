@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -20,15 +21,29 @@ public class Player : MonoBehaviour
 
     private Vector3 _direction = Vector3.forward;
 
-    private float _speed;
+    private float _speed = 0f;
 
     private bool _grounded;
     private bool _jumping;
     private bool _dead;
     
-    private Vector3 _initialSize;
-    private Vector3 _shrinkSize;
-    private Vector3 _growSize;
+    private float _size = 1f;
+    private float _targetSizeAfterMerge = 1f;
+    private float _temperatureSizeModifier = 0f;
+    private float _accelerationSizeModifier = 0f;
+    private float _targetAccelerationSizeModifier = 0f;
+    
+    [SerializeField] private float shrinkSpeed = 0.01f;
+    [SerializeField] private float growthSpeed = 0.01f;
+
+    [SerializeField] private Material material;
+    [SerializeField] private Color color;
+    [SerializeField] private Color coolColor;
+    [SerializeField] private Color heatColor;
+
+    private float _lift = 0f;
+    
+    private Vector3 _scale;
     
     private enum SizeType
     {
@@ -45,9 +60,6 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        _initialSize = transform.localScale;
-        _shrinkSize = _initialSize * 0.5f;
-        _growSize = _initialSize * 2f;
         sizeType = SizeType.Normal;
         _sizeCooldownTimer = 0;
 
@@ -78,43 +90,74 @@ public class Player : MonoBehaviour
 
     private void SizeHandler()
     {
-        if (_sizeCooldownTimer > 0)
+        if (SizeType.None.Equals(sizeType) && _sizeCooldownTimer > 0)
         {
             _sizeCooldownTimer -= Time.deltaTime;
             Debug.Log("Growing cooldown: " + _sizeCooldownTimer);
             // Change player's size based on the sizeType
-        }
-        if (_sizeCooldownTimer <= 0)
-        {
-            sizeType = SizeType.Normal;
+            if (_sizeCooldownTimer <= 0)
+            {
+                sizeType = SizeType.Normal;
+            }
         }
         
         switch (sizeType)
         {
             case SizeType.Normal:
-                transform.localScale = Vector3.Lerp(transform.localScale, _initialSize, Time.deltaTime * 2);
+                _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.deltaTime * 2);
+                material.color = Color.Lerp(material.color, color, Time.deltaTime * 2);
+                _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
                 break;
             case SizeType.Shrink:
-                transform.localScale = Vector3.Lerp(transform.localScale, _shrinkSize, Time.deltaTime * 2);
+                if (_temperatureSizeModifier > 0)
+                {
+                    _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.deltaTime * 2);
+                    _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
+                }
+                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier - shrinkSpeed * Time.deltaTime, -0.5f * _size, 0.5f * _size); 
+                material.color = Color.Lerp(material.color, coolColor, Time.deltaTime);
                 break;
             case SizeType.Grow:
-                transform.localScale = Vector3.Lerp(transform.localScale, _growSize, Time.deltaTime * 2);
+                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier + growthSpeed * Time.deltaTime, -0.5f * _size, 0.5f * _size); 
+                material.color = Color.Lerp(material.color, heatColor, Time.deltaTime);
+                _lift = Mathf.Clamp(_lift + 10 * Time.deltaTime, 0, 5);
                 break;
             case SizeType.None:
                 break;
         }
+
+        _size = Mathf.Lerp(_size, _targetSizeAfterMerge, Time.deltaTime * 2);
+        transform.localScale = Vector3.one * (_size + _temperatureSizeModifier);
+        
+        if (Mathf.Abs(_targetAccelerationSizeModifier - _accelerationSizeModifier) > 0.01f)
+        {
+            _accelerationSizeModifier = Mathf.Lerp(_accelerationSizeModifier, _targetAccelerationSizeModifier, Time.deltaTime * 10f);
+            if (Mathf.Abs(_targetAccelerationSizeModifier - _accelerationSizeModifier) < 0.01f)
+            {
+                _accelerationSizeModifier = _targetAccelerationSizeModifier;
+                _targetAccelerationSizeModifier = 0;
+            }
+        }
+        _playerModelTransform.localScale = Vector3.one + 
+                                           Vector3.up * _accelerationSizeModifier + 
+                                           Vector3.one * (Mathf.Cos(Time.time * (5 + (_speed > 0 ? 5 : 0))) * -0.02f);
+        _playerModelTransform.localPosition = Vector3.up * (0.5f + _accelerationSizeModifier / 2);
     }
 
     public void ShouldShrink()
     {
         sizeType = SizeType.Shrink;
-        _sizeCooldownTimer = 5;
     }
     
     public void ShouldGrow()
     {
         sizeType = SizeType.Grow;
-        _sizeCooldownTimer = 5;
+    }
+    
+    public void EndResizeEffect()
+    {
+        sizeType = SizeType.None;
+        _sizeCooldownTimer = 1;
     }
 
     private void ProcessInput()
@@ -122,16 +165,21 @@ public class Player : MonoBehaviour
         Vector2 inputVector = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         inputVector = ClampInput(inputVector);
 
-        _grounded = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,
-            1, QueryTriggerInteraction.Ignore);
+        bool groundCheck = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,1, QueryTriggerInteraction.Ignore);
+        if (_grounded != groundCheck)
+        {
+            _grounded = groundCheck;
+            if (_grounded) _targetAccelerationSizeModifier = -0.2f;
+        }
+        
         _speed = inputVector.magnitude * maxSpeed * (_grounded ? 1 : 1.2f);
 
         CalculateMovementDirection(inputVector);
 
-        bool nearGround = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 1f);
         if (_grounded && !_jumping && Input.GetButton("Jump"))
         {
             _jumping = true;
+            _targetAccelerationSizeModifier = 0.1f;
         }
     }
 
@@ -179,18 +227,21 @@ public class Player : MonoBehaviour
             _rigidbody.AddForce(Vector3.up * jumpForceMultiplier);
             _jumping = false;
         }
+        
+        _rigidbody.linearVelocity += Vector3.up * (_lift * Time.fixedDeltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Bubble"))
         {
-            float r1 = transform.localScale.x;
+            float r1 = _size;
             float r2 = other.transform.parent.transform.localScale.x;
             float r3 = Mathf.Pow(r1 * r1 * r1 + r2 * r2 * r2, 1f / 3);
-            transform.localScale = Vector3.one * r3;
+            _targetSizeAfterMerge = r3;
             Destroy(other.transform.parent.gameObject);
-        } else if (other.CompareTag("Hazard"))
+        } 
+        else if (other.CompareTag("Hazard"))
         {
             transform.position = _respawnPoint.position;
         }

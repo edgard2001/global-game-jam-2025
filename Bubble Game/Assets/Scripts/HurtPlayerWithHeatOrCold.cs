@@ -45,4 +45,12 @@ public class HurtPlayerWithHeatOrCold : MonoBehaviour
             // other.GetComponent<Rigidbody>().AddForce(-other.transform.forward * 100000f);
         }
     }
+    
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.GetComponent<Player>().EndResizeEffect();
+        }
+    }
 }

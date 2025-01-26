@@ -48,7 +48,7 @@ MonoBehaviour:
   offset: {x: 0, y: 0, z: 0}
   cameraChaseSpeed: 4
   minDistance: 0.1
-  maxDistance: 10
+  maxDistance: 4
   sphereCheckRadius: 0.1
   layerMask:
     serializedVersion: 2

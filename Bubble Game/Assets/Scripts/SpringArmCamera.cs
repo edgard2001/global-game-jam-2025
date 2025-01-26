@@ -73,8 +73,8 @@ public class SpringArmCamera : MonoBehaviour
         _pivotTransform.rotation = Quaternion.Euler(_pitch, _yaw, 0) * _startRotation;
         Vector3 targetPosition = playerTransform.position + offset.x * _pivotTransform.right +
                                  offset.y * Vector3.up + offset.z * _pivotTransform.forward;
-        _pivotTransform.position =
-            Vector3.Lerp(_pivotTransform.position, targetPosition, cameraChaseSpeed * Time.deltaTime);
+        _pivotTransform.position = targetPosition;
+        //    Vector3.Lerp(_pivotTransform.position, targetPosition, cameraChaseSpeed * Time.deltaTime);
 
         RaycastHit hit;
         Ray ray = new Ray(_pivotTransform.position, -_cameraTransform.forward);
