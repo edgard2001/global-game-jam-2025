@@ -12,9 +12,11 @@ public class ButtonTrigger : MonoBehaviour, IInteractableTrigger
     [SerializeField] private bool toggleMode = false; // New toggle mode boolean
     private bool _isPressed = false;
 
+    public float deactivationDelay = 0f;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") )
+        if (other.CompareTag("Player") || other.CompareTag("Player Projectile"))
         {
             if (!toggleMode) // Original behavior
             {
@@ -45,16 +47,21 @@ public class ButtonTrigger : MonoBehaviour, IInteractableTrigger
 
     private void OnTriggerExit(Collider other)
     {
-        if (!toggleMode && _isPressed && other.CompareTag("Player"))
+        if (!toggleMode && _isPressed && (other.CompareTag("Player")  || other.CompareTag("Player Projectile")))
         {
-            ChangeMaterial(platformMaterial);
-            _isPressed = false;
-            OnDeactivate?.Invoke();
+            Invoke(nameof(Deactivate), deactivationDelay);
         }
     }
     
     private void ChangeMaterial(Material material)
     {
         gameObject.GetComponent<Renderer>().material = material;
+    }
+    
+    private void Deactivate()
+    {
+        ChangeMaterial(platformMaterial);
+        _isPressed = false;
+        OnDeactivate?.Invoke();
     }
 }

@@ -151,9 +151,12 @@ MonoBehaviour:
   popEffect: {fileID: 1945864579541184, guid: 6561f682a05aa4a4e8312d87377cabd5, type: 3}
   shootEffect: {fileID: 0}
   jumpAudioClip: {fileID: 8300000, guid: 7d8c9d5c9e7027c4d9789b8918146f1d, type: 3}
+  mergeAudioClip: {fileID: 0}
+  shotAudioClip: {fileID: 0}
   deathAudioClip: {fileID: 8300000, guid: 75bbc95877352184181e48ea378779e8, type: 3}
   growAudioClip: {fileID: 0}
   shrinkAudioClip: {fileID: 0}
+  projectileBubble: {fileID: 0}
 --- !u!54 &5350307497288384430
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -178,9 +181,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &8094735291757025615
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -212,12 +215,12 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
+  m_audioClip: {fileID: 8300000, guid: d7f45e1cf2a874bb5ad730b7f3450d55, type: 3}
+  m_Resource: {fileID: 8300000, guid: d7f45e1cf2a874bb5ad730b7f3450d55, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.01
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

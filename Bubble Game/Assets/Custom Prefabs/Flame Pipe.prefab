@@ -1985,9 +1985,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 733929033997344251}
     m_Modifications:
+    - target: {fileID: 1186817620474416, guid: d9c1fac1f620ebd4f9e47ef7b9ca6bca, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1259762591101698, guid: d9c1fac1f620ebd4f9e47ef7b9ca6bca, type: 3}
       propertyPath: m_Name
       value: FX_FlameThrower_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1259762591101698, guid: d9c1fac1f620ebd4f9e47ef7b9ca6bca, type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4846459981974822, guid: d9c1fac1f620ebd4f9e47ef7b9ca6bca, type: 3}
       propertyPath: m_LocalScale.x

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7143922546827029911}
   - component: {fileID: 6194542734314478143}
   - component: {fileID: 4166449218456132101}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SpawnpointTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,10 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6efcbdb335f4342d69f1752497df5a17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultRespawnPoint: {fileID: 0}
   _player: {fileID: 0}
   _respawnPoint: {fileID: 2520137334413422053}
-  _respawnPointActive: 0
 --- !u!54 &4166449218456132101
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -108,7 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2520137334413422053}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Spawnpoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +140,7 @@ GameObject:
   - component: {fileID: 6172404983524167860}
   - component: {fileID: 5906320165473502432}
   - component: {fileID: 6030452495811512554}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: SphereMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -1990,6 +1990,10 @@ PrefabInstance:
       value: FX_Steam_03
       objectReference: {fileID: 0}
     - target: {fileID: 1542984833247318, guid: 4bd26695ba41ea2408ec9cbc9ef0c183, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1542984833247318, guid: 4bd26695ba41ea2408ec9cbc9ef0c183, type: 3}
       propertyPath: m_TagString
       value: ColdElement
       objectReference: {fileID: 0}
