@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     //private PlatformingObject _platforming;
 
     private Rigidbody _rigidbody;
+    private Collider _collider;
     private Transform _playerModelTransform;
     private Transform _cameraTransform;
 
@@ -28,6 +29,7 @@ public class Player : MonoBehaviour
 
     private bool _grounded;
     private bool _jumping;
+    private int _jumpCounter = 0;
     private bool _dead;
     
     private float _size = 1f;
@@ -87,6 +89,7 @@ public class Player : MonoBehaviour
         //_platforming.OnLeaveGround += OnLeaveGround;
 
         _rigidbody = GetComponent<Rigidbody>();
+        _collider = GetComponent<Collider>();
         _playerModelTransform = transform.GetChild(0).transform;
         _cameraTransform = Camera.main.transform;
         _audio = GetComponent<AudioSource>();
@@ -112,7 +115,7 @@ public class Player : MonoBehaviour
     {
         if (SizeType.None.Equals(sizeType) && _sizeCooldownTimer > 0)
         {
-            _sizeCooldownTimer -= Time.deltaTime;
+            _sizeCooldownTimer -= Time.fixedDeltaTime;
             Debug.Log("Growing cooldown: " + _sizeCooldownTimer);
             // Change player's size based on the sizeType
             if (_sizeCooldownTimer <= 0)
@@ -124,36 +127,36 @@ public class Player : MonoBehaviour
         switch (sizeType)
         {
             case SizeType.Normal:
-                _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.deltaTime * 2);
-                material.color = Color.Lerp(material.color, color, Time.deltaTime * 2);
-                _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
+                _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.fixedDeltaTime * 2);
+                material.color = Color.Lerp(material.color, color, Time.fixedDeltaTime * 2);
+                _lift = Mathf.Lerp(_lift, 0, Time.fixedDeltaTime * 2);
                 break;
             case SizeType.Shrink:
                 if (_temperatureSizeModifier > 0)
                 {
-                    _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.deltaTime * 2);
-                    _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
+                    _temperatureSizeModifier = Mathf.Lerp(_temperatureSizeModifier, 0, Time.fixedDeltaTime * 2);
+                    _lift = Mathf.Lerp(_lift, 0, Time.fixedDeltaTime * 2);
                 }
-                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier - shrinkSpeed * Time.deltaTime, -0.5f * _size, 0.5f * _size); 
-                material.color = Color.Lerp(material.color, coolColor, Time.deltaTime);
+                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier - shrinkSpeed * Time.fixedDeltaTime, -0.5f * _size, 0.5f * _size); 
+                material.color = Color.Lerp(material.color, coolColor, Time.fixedDeltaTime);
                 break;
             case SizeType.Grow:
-                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier + growthSpeed * Time.deltaTime, -0.5f * _size, 0.5f * _size); 
-                material.color = Color.Lerp(material.color, heatColor, Time.deltaTime);
-                _lift = Mathf.Clamp(_lift + 10 * Time.deltaTime, 0, 5);
+                _temperatureSizeModifier = Mathf.Clamp(_temperatureSizeModifier + growthSpeed * Time.fixedDeltaTime, -0.5f * _size, 0.5f * _size); 
+                material.color = Color.Lerp(material.color, heatColor, Time.fixedDeltaTime);
+                _lift = Mathf.Clamp(_lift + 10 * Time.fixedDeltaTime, 0, 5);
                 break;
             case SizeType.None:
-                _lift = Mathf.Lerp(_lift, 0, Time.deltaTime * 2);
+                _lift = Mathf.Lerp(_lift, 0, Time.fixedDeltaTime * 2);
                 break;
         }
 
-        _size = Mathf.Lerp(_size, _targetSize, Time.deltaTime * 2);
+        _size = Mathf.Lerp(_size, _targetSize, Time.fixedDeltaTime * 2);
         if (Mathf.Abs(_targetSize - _size) < 0.01) _size = _targetSize;
         transform.localScale = Vector3.one * (_size + _temperatureSizeModifier);
         
         if (Mathf.Abs(_targetAccelerationSizeModifier - _accelerationSizeModifier) > 0.01f)
         {
-            _accelerationSizeModifier = Mathf.Lerp(_accelerationSizeModifier, _targetAccelerationSizeModifier, Time.deltaTime * 10f);
+            _accelerationSizeModifier = Mathf.Lerp(_accelerationSizeModifier, _targetAccelerationSizeModifier, Time.fixedDeltaTime * 10f);
             if (Mathf.Abs(_targetAccelerationSizeModifier - _accelerationSizeModifier) < 0.01f)
             {
                 _accelerationSizeModifier = _targetAccelerationSizeModifier;
@@ -193,22 +196,31 @@ public class Player : MonoBehaviour
             return;
         }
 
-        bool groundCheck = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.01f,1, QueryTriggerInteraction.Ignore);
+        bool groundCheck = Physics.Raycast(_playerModelTransform.position, Vector3.down, transform.localScale.x / 2 + 0.05f,1, QueryTriggerInteraction.Ignore);
         if (_grounded != groundCheck)
         {
             _grounded = groundCheck;
-            if (_grounded) _targetAccelerationSizeModifier = -0.2f;
+            if (_grounded)
+            {
+                _targetAccelerationSizeModifier = -0.2f;
+                _jumpCounter = 0;
+            }
         }
         
         _speed = inputVector.magnitude * maxSpeed * (_grounded ? 1 : 1.2f);
 
         CalculateMovementDirection(inputVector);
 
-        if (_grounded && !_jumping && Input.GetButton("Jump"))
+        if (_grounded && !_jumping && Input.GetButton("Jump") && _targetAccelerationSizeModifier == 0)
         {
             _audio.PlayOneShot(jumpAudioClip);
             _jumping = true;
             _targetAccelerationSizeModifier = 0.1f;
+        } 
+        
+        if (!_grounded)
+        {
+            _jumping = false;
         }
 
         if (Input.GetButtonDown("Fire1")) Shoot();
@@ -242,7 +254,9 @@ public class Player : MonoBehaviour
 
     private void MoveAndTurn()
     {
-        if (_speed > 0 && _grounded && !_dead)
+        if (_dead) return;
+        
+        if (_speed > 0 && _grounded)
             _playerModelTransform.rotation = Quaternion.Lerp(_playerModelTransform.rotation,
                 Quaternion.LookRotation(_direction),
                 10f * Time.fixedDeltaTime);
@@ -257,6 +271,7 @@ public class Player : MonoBehaviour
         {
             _rigidbody.AddForce(Vector3.up * jumpForceMultiplier);
             _jumping = false;
+            _jumpCounter++;
         }
         
         _rigidbody.linearVelocity += Vector3.up * (_lift * Time.fixedDeltaTime);
@@ -264,6 +279,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_dead) return;
+        
         if (other.CompareTag("Bubble"))
         {
             float r1 = _size;
@@ -275,14 +292,18 @@ public class Player : MonoBehaviour
         } 
         else if (other.CompareTag("Hazard") && !_dead)
         {
+            print(3);
             KillPlayer();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if (_dead) return;
+        
         if (other.CompareTag("PlayerArea") && !_dead)
         {
+            print(0);
             KillPlayer();
         }
     }
@@ -292,6 +313,8 @@ public class Player : MonoBehaviour
         _dead = true;
         _playerModelTransform.gameObject.SetActive(false);
         _rigidbody.useGravity = false;
+        _rigidbody.linearVelocity = Vector3.zero;
+        _collider.enabled = false;
 
         _audio.PlayOneShot(deathAudioClip);
 
@@ -315,6 +338,7 @@ public class Player : MonoBehaviour
 
     private void Respawn()
     {
+        print(2);
         material.color = color;
 
         _size = 1f;
@@ -323,9 +347,11 @@ public class Player : MonoBehaviour
         _accelerationSizeModifier = 0f;
         _targetAccelerationSizeModifier = 0f;
 
+        _collider.enabled = true;
+        
         transform.position = _respawnPoint.position;
         _playerModelTransform.gameObject.SetActive(true);
-
+        
         _rigidbody.useGravity = true;
         _rigidbody.linearVelocity = Vector3.zero;
 
@@ -338,7 +364,7 @@ public class Player : MonoBehaviour
             
         _targetSize = _size - 0.03f;
 
-        Vector3 force = _cameraTransform.forward * 5 + Vector3.up * 5;
+        Vector3 force = _cameraTransform.forward * 10 + Vector3.up * 5;
 
         GameObject projectile = Instantiate(projectileBubble, 
             _playerModelTransform.position + _cameraTransform.forward * transform.localScale.z,

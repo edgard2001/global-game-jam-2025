@@ -151,12 +151,12 @@ MonoBehaviour:
   popEffect: {fileID: 1945864579541184, guid: 6561f682a05aa4a4e8312d87377cabd5, type: 3}
   shootEffect: {fileID: 0}
   jumpAudioClip: {fileID: 8300000, guid: 7d8c9d5c9e7027c4d9789b8918146f1d, type: 3}
-  mergeAudioClip: {fileID: 0}
-  shotAudioClip: {fileID: 0}
+  mergeAudioClip: {fileID: 8300000, guid: 5c3e1a9eba560d14f99515ea61e72c0e, type: 3}
+  shotAudioClip: {fileID: 8300000, guid: 4e8987077d4886242bb8a570e950e305, type: 3}
   deathAudioClip: {fileID: 8300000, guid: 75bbc95877352184181e48ea378779e8, type: 3}
   growAudioClip: {fileID: 0}
   shrinkAudioClip: {fileID: 0}
-  projectileBubble: {fileID: 0}
+  projectileBubble: {fileID: 4835710324965543283, guid: b407aaf499c8e4e468f692299f76e3d3, type: 3}
 --- !u!54 &5350307497288384430
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -182,7 +182,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!135 &8094735291757025615
 SphereCollider:

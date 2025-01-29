@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SpikeShooter : MonoBehaviour
@@ -10,6 +11,13 @@ public class SpikeShooter : MonoBehaviour
     public float shootDelay = 1f;
     
     private float shootTimer;
+    private AudioSource audio;
+    public AudioClip shootSound;
+
+    private void Start()
+    {
+        audio = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -34,6 +42,7 @@ public class SpikeShooter : MonoBehaviour
         Rigidbody rb = spike.GetComponent<Rigidbody>();
         rb.linearVelocity = transform.forward * spikeSpeed;
         Destroy(spike, spikeLifetime);
+        audio.PlayOneShot(shootSound);
     }
     
 }

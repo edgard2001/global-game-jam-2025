@@ -65,27 +65,27 @@ public class Socket : MonoBehaviour, IInteractableTrigger
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("PuzzleObject")) return;
-
-        if (other.transform.parent != null) return;
-
-        other.transform.parent = attachmentPoint;
-        other.transform.localPosition = Vector3.zero;
-        other.transform.localRotation = Quaternion.identity;
-
-        Rigidbody rb = other.GetComponent<Rigidbody>();
-
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        rb.isKinematic = true;
-        rb.useGravity = false;
-
-        _item = other.transform;
-
-        MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-        propertyBlock.SetColor("_Color", onColor);
-        lightRenderer.GetComponent<Renderer>().SetPropertyBlock(propertyBlock);
-
-        OnActivate?.Invoke();
+        // if (!other.CompareTag("PuzzleObject")) return;
+        //
+        // if (other.transform.parent != null) return;
+        //
+        // other.transform.parent = attachmentPoint;
+        // other.transform.localPosition = Vector3.zero;
+        // other.transform.localRotation = Quaternion.identity;
+        //
+        // Rigidbody rb = other.GetComponent<Rigidbody>();
+        //
+        // rb.linearVelocity = Vector3.zero;
+        // rb.angularVelocity = Vector3.zero;
+        // rb.isKinematic = true;
+        // rb.useGravity = false;
+        //
+        // _item = other.transform;
+        //
+        // MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+        // propertyBlock.SetColor("_Color", onColor);
+        // lightRenderer.GetComponent<Renderer>().SetPropertyBlock(propertyBlock);
+        //
+        // OnActivate?.Invoke();
     }
 }
